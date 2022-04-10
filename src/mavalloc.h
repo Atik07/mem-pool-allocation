@@ -1,60 +1,59 @@
 #include <stddef.h>
 
-#define ALIGN4(s)  (((((s) - 1) >> 2) << 2) + 4)
+#define ALIGN4(s) (((((s)-1) >> 2) << 2) + 4)
 
 enum ALGORITHM
 {
-  FIRST_FIT = 0,
-  NEXT_FIT = 1,
-  BEST_FIT = 2,
-  WORST_FIT = 3
-}; 
+    FIRST_FIT = 0,
+    NEXT_FIT = 1,
+    BEST_FIT = 2,
+    WORST_FIT = 3
+};
 
+/* memory allocation algorithm */
 enum ALGORITHM MEM_ALGO;
+/* the memory pool from which memory can be requested and accessed */
 char *pool;
 
 /**
  * @brief Initialize the allocation arena and set the algorithm type
  *
- * This function takes the provided size and calls malloc to allocate a 
+ * This function takes the provided size and calls malloc to allocate a
  * memory arena. The size must be aligned to a word boundary.
- * 
- * If the allocation succeeds it returns 0. If the allocation fails or the 
+ *
+ * If the allocation succeeds it returns 0. If the allocation fails or the
  * size is less than 0 the function returns -1
  *
  * \param size The size of the pool to allocate in bytes
  * \param algorithm The heap algorithm to implement
  * \return 0 on success. -1 on failure
  **/
-int mavalloc_init( size_t size, enum ALGORITHM algorithm );
-
+int mavalloc_init(size_t size, enum ALGORITHM algorithm);
 
 /**
- * @brief Destroy the arena 
+ * @brief Destroy the arena
  *
  * This function releases the arena
  *
- * \return None 
+ * \return None
  **/
-void mavalloc_destroy( );
-
+void mavalloc_destroy();
 
 /**
- * @brief Allocate memory from the arena 
+ * @brief Allocate memory from the arena
  *
- * This function allocated memory from the arena.  The parameter size 
- * specifies the number of bytes to allocates.  This _must_ be 4 byte aligned using the 
- * ALIGN4 macro. 
- * 
- * The function searches the arena for a free block using the heap allocation algorithm 
+ * This function allocated memory from the arena.  The parameter size
+ * specifies the number of bytes to allocates.  This _must_ be 4 byte aligned using the
+ * ALIGN4 macro.
+ *
+ * The function searches the arena for a free block using the heap allocation algorithm
  * specified when the arena was allocated.
  *
  * If there is no available block of memory the function returns NULL
  *
- * \return A pointer to the available memory or NULL if no free block is found 
+ * \return A pointer to the available memory or NULL if no free block is found
  **/
-void * mavalloc_alloc( size_t size );
-
+void *mavalloc_alloc(size_t size);
 
 /*
  * \brief free the pointer
@@ -71,9 +70,8 @@ void mavalloc_free(void *ptr);
 /*
  * \brief Allocator size
  *
- * Return the number of nodes in the allocators linked list 
+ * Return the number of nodes in the allocators linked list
  *
- * \return The size of the allocator linked list 
+ * \return The size of the allocator linked list
  */
-int mavalloc_size( );
-
+int mavalloc_size();
